@@ -4,7 +4,8 @@
 
 .PHONY: version vars init-venv build build-travis init-db reset \
 	up down logs restart restart-web \
-	collectstatic deploy dump restore release \
+	collectstatic migrations \
+	deploy dump restore release \
 	test coverage
 
 VERSION = $(shell python update_release.py -v)
@@ -78,8 +79,6 @@ init-db:
 	# initialize DBs executing migration scripts
 	docker-compose -f docker-compose-dev.yml exec web \
 		python src/manage.py migrate
-	docker-compose -f docker-compose-dev.yml exec web \
-		python src/manage.py migrate --database=mock
 	# create super admin in app
 	docker-compose -f docker-compose-dev.yml exec web \
 		python src/manage.py createsuperuser --username=${SUPER_ADMIN_USERNAME} --email=${SUPER_ADMIN_EMAIL} --noinput
@@ -114,6 +113,10 @@ restart-web:
 collectstatic:
 	docker-compose -f docker-compose-dev.yml exec web \
 		python src/manage.py collectstatic --noinput
+
+migrations:
+	docker-compose -f docker-compose-dev.yml exec web \
+		python src/manage.py makemigrations
 
 dump:
 	@echo dumping DB on last commit `git rev-parse --verify HEAD`
