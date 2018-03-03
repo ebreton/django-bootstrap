@@ -41,7 +41,7 @@ vars:
 
 init-venv:
 ifeq ($(wildcard .env),)
-	cp env/django.env .env
+	cp .sample.env .env
 	echo SECRET_KEY=`openssl rand -base64 32` >> .env
 	echo PYTHONPATH=`pwd`/src >> .env
 	@echo "! Set up your .env file before running"
