@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 
-from exports import format_version
+from myapp import format_version
 
 
 class Command(BaseCommand):

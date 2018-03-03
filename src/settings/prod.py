@@ -49,10 +49,5 @@ LOGGING['loggers'] = {
         'handlers': ['file'],
         'level': 'INFO',
         'propagate': True
-    },
-    'exports': {
-        'handlers': ['file'],
-        'level': 'INFO',
-        'propagate': True
     }
 }

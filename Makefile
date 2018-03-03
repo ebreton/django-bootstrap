@@ -167,7 +167,7 @@ release:
 	python update_release.py publish
 
 	# cancel pre-update of versions
-	git checkout src/exports/versions.py
+	git checkout src/myapp/versions.py
 
 	# git merge master
 	git checkout master
@@ -185,12 +185,12 @@ deploy: dump
 	make restart-web
 
 test: check-env
-	flake8 src/exports --max-line-length=120
-	docker-compose -f docker-compose-dev.yml exec web python src/manage.py test exports --noinput --failfast --keepdb
+	flake8 src/myapp --max-line-length=120
+	docker-compose -f docker-compose-dev.yml exec web python src/manage.py test myapp --noinput --failfast --keepdb
 
 coverage: check-env
-	flake8 src/exports --max-line-length=120
-	docker-compose -f docker-compose-dev.yml exec web src/manage.py test exports --noinput
+	flake8 src/myapp --max-line-length=120
+	docker-compose -f docker-compose-dev.yml exec web src/manage.py test myapp --noinput
 	coverage html
 	open htmlcov/index.html
 

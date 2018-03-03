@@ -77,12 +77,15 @@ Just make sure that your python executable is aligned with the one declared in t
 
 The script depends on the existence of (at least) one git tag. If you have none, you should run
 
-    $ git tag 0.1.0
-    $ git push --tags
+    git tag 0.1.0
+    git push --tags
 
 The hook will run the following on each commit:
 
     $ python update_release.py
+    INFO - compute - will set _version=0.1.1-rc
+    INFO - compute - will set _build=34xxx
+    INFO - compute - will set _release=0.1.0-1-g34xxx
 
 You can access, with the default configuration :
 
@@ -103,18 +106,13 @@ To rebuild everything from scratch
 
     make reset
 
-This command can actually be split in two parts if you only want to reset docker / db
-
-    make init-docker
-    make init-db
-
 To run the tests
 
-    docker-compose -f docker-compose-dev.yml exec web python src/manage.py test exports --noinput [--failfast --keepdb]
+    make test
 
 Or to test more intensively with nose and coverage
 
-    docker-compose -f docker-compose-dev.yml exec web src/manage.py test exports --noinput [-x]
+    make coverage
 
 To check your environment variables
 

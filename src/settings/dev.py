@@ -39,10 +39,5 @@ LOGGING['loggers'] = {
         'handlers': ['console'],
         'level': 'DEBUG',
         'propagate': True
-    },
-    'exports': {
-        'handlers': ['console'],
-        'level': 'DEBUG',
-        'propagate': True
     }
 }

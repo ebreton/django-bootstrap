@@ -1,4 +1,4 @@
-# Contributing to Infoscience-exports
+# Contributing
 
 As an open source project, we always welcome contributions of many forms.
 
