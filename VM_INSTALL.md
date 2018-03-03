@@ -37,25 +37,25 @@ You can check the correct intallation with
 
 ## 3. Install sysadmin account
 
-    adduser infoscience-exports
-    passwd infoscience-exports
-    usermod -aG wheel infoscience-exports
-    usermod -aG docker infoscience-exports
+    adduser myapp-user
+    passwd myapp-user
+    usermod -aG wheel myapp-user
+    usermod -aG docker myapp-user
 
     mkdir .ssh
     chmod 700 .ssh/
 
 You can check the correct intallation with
 
-    $ ls -laG /home/infoscience-exports/
+    $ ls -laG /home/myapp-user/
     total 16
-    drwx------. 3 infoscience-exports  90 Feb 21 13:15 .
+    drwx------. 3 myapp-user  90 Feb 21 13:15 .
     drwxr-xr-x. 3 root                 32 Feb 21 13:06 ..
-    -rw-------. 1 infoscience-exports 519 Feb 21 13:15 .bash_history
-    -rw-r--r--. 1 infoscience-exports  18 Sep  6 18:25 .bash_logout
-    -rw-r--r--. 1 infoscience-exports 193 Sep  6 18:25 .bash_profile
-    -rw-r--r--. 1 infoscience-exports 231 Sep  6 18:25 .bashrc
-    drwx------. 2 infoscience-exports  28 Feb 21 13:14 .ssh
+    -rw-------. 1 myapp-user 519 Feb 21 13:15 .bash_history
+    -rw-r--r--. 1 myapp-user  18 Sep  6 18:25 .bash_logout
+    -rw-r--r--. 1 myapp-user 193 Sep  6 18:25 .bash_profile
+    -rw-r--r--. 1 myapp-user 231 Sep  6 18:25 .bashrc
+    drwx------. 2 myapp-user  28 Feb 21 13:14 .ssh
 
 ## 4. Do not forget to add your public key
 
@@ -64,13 +64,13 @@ You can check the correct intallation with
 
 You can check the correct intallation from your host
 
-    $ ssh infoscience-exports@vm
+    $ ssh myapp-user@vm
     not prompting password
 
 ## 5. Checkout code and run
 
-    git clone git@github.com:ebreton/infoscience-exports.git
+    git clone git@github.com:ebreton/djangobootstrap.git
 
 and continue the reading with DOCKER_INSTALL_
 
-.. _DOCKER_INSTALL: https://github.com/ebreton/infoscience-exports/blob/master/DOCKER_INSTALL.rst
+.. _DOCKER_INSTALL: https://github.com/ebreton/djangobootstrap/blob/master/DOCKER_INSTALL.rst

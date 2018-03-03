@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "7d1da6b6419211fd41d06c14bd74cde8fc369ab762c178a1e8dde6e127e803e3"
+            "sha256": "0e4cd567ad0ed0e99e9692ea7332918567fb0345014e149cf96b9e325ece1f44"
         },
         "host-environment-markers": {
             "implementation_name": "cpython",
@@ -41,6 +41,12 @@
                 "sha256:6db4a27b33851833e68b96344f9df063150dcace8d4787ebfc21eceb55196945"
             ],
             "version": "==0.0.6"
+        },
+        "docopt": {
+            "hashes": [
+                "sha256:49b3a825280bd66b3aa83585ef59c4a8c82f2c8a522dbe754a8bc8d08c85c491"
+            ],
+            "version": "==0.6.2"
         },
         "gunicorn": {
             "hashes": [
@@ -189,7 +195,6 @@
                 "sha256:3c85641778460581c42924384f5e68076d724ceac0f267d66c757f7535069c93",
                 "sha256:e90f17980e6ab0f3c2f3730e56d1fe9bcba1891eeea58966e89d352492cc74f4"
             ],
-            "markers": "platform_python_implementation != 'PyPy'",
             "version": "==1.11.5"
         },
         "chardet": {

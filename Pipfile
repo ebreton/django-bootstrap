@@ -7,10 +7,11 @@ name = "pypi"
 
 [packages]
 
-Django = "*"
+django = "*"
 "django-bootstrap4" = "*"
 gunicorn = "*"
 "psycopg2-binary" = "*"
+docopt = "*"
 
 
 [dev-packages]
@@ -21,9 +22,9 @@ codecov = "*"
 django-debug-toolbar = "*"
 django-extensions = "*"
 django-nose = "*"
-"Fabric3" = "*"
-factory_boy = "*"
-Faker = "*"
+"fabric3" = "*"
+factory-boy = "*"
+faker = "*"
 "flake8" = "*"
 nose-progressive = "*"
 selenium = "*"
