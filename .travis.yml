@@ -1,0 +1,25 @@
+---
+sudo: required
+
+services:
+- docker
+
+language: python
+
+python:
+- 3.5
+
+install:
+- make init-venv
+- make build-travis
+- make init-db
+
+script:
+- make vars
+- make coverage
+
+after_success:
+- codecov
+
+matrix:
+  fast_finish: true
