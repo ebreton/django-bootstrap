@@ -72,5 +72,3 @@ You can check the correct intallation from your host
     git clone git@github.com:ebreton/djangobootstrap.git
 
 and continue the reading with DOCKER_INSTALL_
-
-.. _DOCKER_INSTALL: https://github.com/ebreton/djangobootstrap/blob/master/DOCKER_INSTALL.rst
