@@ -38,6 +38,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
 
     # Third party apps
+    'rest_framework',            # utilities for rest apis
+    'rest_framework.authtoken',  # token authentication
     'bootstrap4',
 
     # Your apps
@@ -171,4 +173,23 @@ LOGGING = {
             'class': 'logging.NullHandler',
         },
     }
+}
+
+# Django Rest Framework
+REST_FRAMEWORK = {
+    'PAGINATE_BY': 30,
+    'PAGINATE_BY_PARAM': 'per_page',
+    'MAX_PAGINATE_BY': 1000,
+    "DATETIME_FORMAT": "%Y-%m-%dT%H:%M:%S%z",
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    )
 }

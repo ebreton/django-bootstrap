@@ -1,27 +1,27 @@
 from django.core.exceptions import ValidationError
 from django.test import TransactionTestCase
-from .factories import ExportFactory
-from exports.models import Export
+from .factories import GreetingFactory
+from myapp.models import Greeting
 
 
-class ExportsTestCase(TransactionTestCase):
+class GreetingsTestCase(TransactionTestCase):
     def setUp(self):
         # fixtures
-        (self.mpl, self.mi) = ExportFactory.create_batch(2)
+        (self.mpl, self.mi) = GreetingFactory.create_batch(2)
 
     def test_unicode_representation(self):
-        self.assertEqual(self.mpl.name, 'Name1')
+        self.assertEqual(str(self.mpl), 'Name1')
 
-    def test_export_creation(self):
-        ExportFactory(name='This is a test')
+    def test_greeting_creation(self):
+        GreetingFactory(name='This is a test')
 
         self.assertEqual(
-            len(Export.objects.filter(name='This is a test')), 1)
+            len(Greeting.objects.filter(name='This is a test')), 1)
 
     def test_missing_name(self):
         with self.assertRaises(Exception):
-            ExportFactory(name=None)
+            GreetingFactory(name=None)
 
     def test_blank_name(self):
         with self.assertRaises(ValidationError):
-            ExportFactory.build(name='').full_clean()
+            GreetingFactory.build(name='').full_clean()

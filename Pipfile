@@ -12,6 +12,10 @@ django = "*"
 gunicorn = "*"
 "psycopg2-binary" = "*"
 docopt = "*"
+django-model-utils = "*"
+djangorestframework = "*"
+django-filter = "*"
+django-dirtyfields = "*"
 
 
 [dev-packages]

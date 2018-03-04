@@ -1,6 +1,15 @@
 import factory
 from django.contrib.auth import get_user_model
 
+from myapp.models import Greeting
+
+
+class GreetingFactory(factory.DjangoModelFactory):
+    class Meta:
+        model = Greeting
+
+    name = factory.Iterator(['Name1', 'Name2'])
+
 
 class AdminUserFactory(factory.DjangoModelFactory):
     class Meta:

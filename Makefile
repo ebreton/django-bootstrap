@@ -78,6 +78,8 @@ init-db:
 		psql ${DB_NAME} -c "ALTER ROLE ${DATABASE_USER} WITH CREATEDB;" -U postgres
 	# initialize DBs executing migration scripts
 	docker-compose -f docker-compose-dev.yml exec web \
+		python src/manage.py makemigrations
+	docker-compose -f docker-compose-dev.yml exec web \
 		python src/manage.py migrate
 	# create super admin in app
 	docker-compose -f docker-compose-dev.yml exec web \
@@ -110,11 +112,11 @@ restart-web:
 	docker-compose -f docker-compose-dev.yml stop web
 	docker-compose -f docker-compose-dev.yml start web
 
-collectstatic:
+collectstatic: up
 	docker-compose -f docker-compose-dev.yml exec web \
 		python src/manage.py collectstatic --noinput
 
-migrations:
+migrations: up
 	docker-compose -f docker-compose-dev.yml exec web \
 		python src/manage.py makemigrations
 

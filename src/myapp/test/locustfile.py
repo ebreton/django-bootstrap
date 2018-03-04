@@ -11,17 +11,17 @@ increment.i = 0
 
 class Scenario1(TaskSet):
     @task(2)
-    def create_export(self):
-        response = self.client.get("/exports/new/")
+    def create_greeting(self):
+        response = self.client.get("/greetings/new/")
         csrftoken = response.cookies.get('csrftoken')
-        self.client.post("/exports/new/",
+        self.client.post("/greetings/new/",
                          {"name": "Test%s" % increment(),
                           "csrfmiddlewaretoken": csrftoken}
                          )
 
     @task(60)
-    def list_exports(self):
-        self.client.get("/exports/")
+    def list_greetings(self):
+        self.client.get("/greetings/")
 
 
 class WebsiteUser(HttpLocust):

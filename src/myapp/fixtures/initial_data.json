@@ -1,0 +1,16 @@
+[
+{
+    "fields": {
+        "name": "Name1"
+    },
+    "model": "myapp.greeting",
+    "pk": 1
+},
+{
+    "fields": {
+        "name": "Name2"
+    },
+    "model": "myapp.greeting",
+    "pk": 2
+}
+]

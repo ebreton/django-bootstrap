@@ -40,3 +40,5 @@ postgres:
   image: postgres:10
   volumes:
     - ./db_data:/var/lib/postgresql
+  ports:
+    - "${DATABASE_PORT}:5432"

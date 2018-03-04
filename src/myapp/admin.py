@@ -1,8 +1,10 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
+from django.contrib.admin.options import ModelAdmin
 from django.conf import settings
 
-from .models import User
+from log_utils import LoggedModelAdminMixin
+from .models import User, Greeting
 
 
 admin.autodiscover()
@@ -15,4 +17,9 @@ class EPFLUserModelAdmin(UserAdmin):
     list_display = ('username', 'email', 'last_login', 'is_superuser')
 
 
+class GreetingLoggedModelAdmin(LoggedModelAdminMixin, ModelAdmin):
+    pass
+
+
 admin.site.register(User, EPFLUserModelAdmin)
+admin.site.register(Greeting, GreetingLoggedModelAdmin)
