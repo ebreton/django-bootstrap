@@ -82,8 +82,7 @@ init-db:
 	docker-compose -f docker-compose-dev.yml exec web \
 		python src/manage.py migrate
 	# create super admin in app
-	docker-compose -f docker-compose-dev.yml exec web \
-		python src/manage.py createsuperuser --username=${SUPER_ADMIN_USERNAME} --email=${SUPER_ADMIN_EMAIL} --noinput
+	make superadmin
 	@echo "  -> All set up! You can connect with your tequila acount or the admin (${SUPER_ADMIN_EMAIL})"
 
 reset: build up
@@ -92,6 +91,7 @@ reset: build up
 	@echo ''
 	sleep 3
 	make init-db
+	make collectstatic
 
 up:
 	docker-compose -f docker-compose-dev.yml up -d
@@ -112,6 +112,13 @@ restart-web:
 	docker-compose -f docker-compose-dev.yml stop web
 	docker-compose -f docker-compose-dev.yml start web
 
+superadmin: up
+	docker-compose -f docker-compose-dev.yml exec web \
+	python src/manage.py shell -c "from django.contrib.auth import get_user_model; \
+		User = get_user_model(); \
+		User.objects.filter(email='${SUPER_ADMIN_EMAIL}').delete(); \
+		User.objects.create_superuser('${SUPER_ADMIN_USERNAME}', '${SUPER_ADMIN_EMAIL}', '${SUPER_ADMIN_PASSWORD}');"
+
 collectstatic: up
 	docker-compose -f docker-compose-dev.yml exec web \
 		python src/manage.py collectstatic --noinput
@@ -119,6 +126,10 @@ collectstatic: up
 migrations: up
 	docker-compose -f docker-compose-dev.yml exec web \
 		python src/manage.py makemigrations
+
+migrate: up
+	docker-compose -f docker-compose-dev.yml exec web \
+		python src/manage.py migrate
 
 dump:
 	@echo dumping DB on last commit `git rev-parse --verify HEAD`
