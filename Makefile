@@ -166,7 +166,8 @@ release:
 	git push --set-upstream origin release-$(VERSION)
 
 	git tag $(VERSION)
-	git push --tags
+	git tag -f qa-release
+	git push --tags --force
 
 	# updating CHANGELOG
 	github_changelog_generator
@@ -186,6 +187,14 @@ release:
 	git checkout master
 	git merge release-$(VERSION)
 	git push
+
+push-prod:
+	@# confirm push to production
+	@python update_release.py confirm --prod
+
+	# update tags
+	git tag -f prod-release
+	git push --tags --force
 
 deploy: dump
 	git pull
