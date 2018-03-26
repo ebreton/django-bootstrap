@@ -17,3 +17,12 @@ NOSE_ARGS = [
     '--with-progressive',
     '--cover-package={}'.format(BASE_DIR)
 ]
+
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+    },
+}
+
+REMOTE_SELENIUM_SERVER = 'http://selenium:4444/wd/hub'

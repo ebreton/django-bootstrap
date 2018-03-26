@@ -1,7 +1,7 @@
 server {
     listen ${DEV_PORT} ssl http2;
 
-    server_name ${ALLOWED_HOST};
+    server_name ${SERVER_HOST};
     charset utf-8;
 
     ssl                             on;
@@ -17,7 +17,7 @@ server {
     ssl_buffer_size                 8k;
 
 
-    location /static {
+    location ${SITE_PATH}/static {
         alias /usr/src/app/staticfiles;
     }
 
