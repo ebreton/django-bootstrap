@@ -49,7 +49,7 @@ Check out [INSTALL.md](./docs/INSTALL.md) for more details
 
 ### Changelog
 
-All notable changes to this project are documented in [CHANGELOG.md](./docs/CHANGELOG.md).
+All notable changes to this project are documented in [CHANGELOG.md](./CHANGELOG.md).
 
 ### Contribution
 
