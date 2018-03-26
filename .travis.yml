@@ -10,15 +10,16 @@ python:
 - 3.5
 
 install:
+- touch coverage.xml
+- pip install codecov
 - make init-venv
 - make build-travis
+# give time to the DB to be ready
+- sleep 2
 - make init-db
 
 script:
-- make vars
-- make coverage
-
-after_success:
+- docker-compose -f docker-compose-dev.yml exec web make test-travis
 - codecov
 
 matrix:

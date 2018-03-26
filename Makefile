@@ -4,26 +4,25 @@
 
 .PHONY: version vars init-venv build build-travis init-db reset \
 	up down logs restart restart-web \
-	collectstatic migrations \
-	deploy dump restore release \
-	test coverage
+	superadmin collectstatic migrations migrate \
+	dump restore release push-prod deploy \
+	fast-test test coverage
 
-VERSION = $(shell python update_release.py -v)
+VERSION:=$(shell python update_release.py -v)
 
 version:
-	@echo $(VERSION)
+	@echo VERSION set to $(VERSION)
 
 vars:
 	@echo 'Used by App:'
 	@echo '  SECRET_KEY=${SECRET_KEY}'
 	@echo '  DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE}'
-	@echo '  ALLOWED_HOST=${ALLOWED_HOST}'
-	@echo '  SITE_URL=${SITE_URL}'
-	@echo '  DATABASE_URL=${DATABASE_URL}'
-	@echo ''
-	@echo 'Used by docker-compose and Nginx'
+	@echo '  SERVER_HOST=${SERVER_HOST}'
 	@echo '  DEV_PORT=${DEV_PORT}'
-	@echo '  ALLOWED_HOST=${ALLOWED_HOST}'
+	@echo '  SITE_PATH=${SITE_PATH}'
+	@echo '  SITE_URL=${SITE_URL}'
+	@echo '  ALLOWED_HOSTS=${ALLOWED_HOSTS}'
+	@echo '  DATABASE_URL=${DATABASE_URL}'
 	@echo ''
 	@echo 'Used by Makefile'
 	@echo '  SUPER_ADMIN_USERNAME=${SUPER_ADMIN_USERNAME}'
@@ -35,9 +34,6 @@ vars:
 	@echo '  DATABASE_USER=${DATABASE_USER}'
 	@echo '  DATABASE_PASSWORD=xxx'
 	@echo '  DB_NAME=${DB_NAME}'
-	@echo ''
-	@echo 'Defined as helpers'
-	@echo '  DB_URL=${DB_URL}'
 
 init-venv:
 ifeq ($(wildcard .env),)
@@ -61,11 +57,6 @@ build:
 	# build docker image
 	docker-compose -f docker-compose-dev.yml down
 	docker-compose -f docker-compose-dev.yml build
-
-build-travis:
-	docker-compose -f docker-compose-dev.yml build
-	docker-compose -f docker-compose-dev.yml up -d
-	sleep 2
 
 init-db:
 	# create DB
@@ -112,7 +103,7 @@ restart-web:
 	docker-compose -f docker-compose-dev.yml stop web
 	docker-compose -f docker-compose-dev.yml start web
 
-superadmin: up
+superadmin:
 	docker-compose -f docker-compose-dev.yml exec web \
 	python src/manage.py shell -c "from django.contrib.auth import get_user_model; \
 		User = get_user_model(); \
@@ -170,12 +161,7 @@ release:
 	git push --tags --force
 
 	# updating CHANGELOG
-	github_changelog_generator
-
-	# commit master
-	git add CHANGELOG.md
-	git commit -m "updated CHANGELOG"
-	git push
+	make update-changelog
 
 	# create github release
 	python update_release.py publish
@@ -188,6 +174,14 @@ release:
 	git merge release-$(VERSION)
 	git push
 
+push-qa:
+	# update tags
+	git tag -f qa-release
+	git push --tags --force
+
+	# updating CHANGELOG
+	make update-changelog
+
 push-prod:
 	@# confirm push to production
 	@python update_release.py confirm --prod
@@ -196,25 +190,54 @@ push-prod:
 	git tag -f prod-release
 	git push --tags --force
 
+	# updating CHANGELOG
+	make update-changelog
+
+update-changelog:
+	# updating CHANGELOG
+	github_changelog_generator
+
+	# commit master
+	git add CHANGELOG.md
+	git commit -m "updated CHANGELOG"
+	git push
+
 deploy: dump
 	git pull
-	# update docker image
-	docker-compose -f docker-compose-dev.yml build web
+	# update docker images
+	docker-compose -f docker-compose-dev.yml build
+	# restart containers
+	make restart
 	# update DB
 	docker-compose -f docker-compose-dev.yml exec web \
 		python src/manage.py migrate
 	# restart web container
 	make restart-web
 
+fast-test: check-env
+	docker-compose -f docker-compose-dev.yml exec web \
+		python src/manage.py test myapp --settings=settings.test --noinput --failfast --keepdb
+
 test: check-env
-	flake8 src/myapp --max-line-length=120
-	docker-compose -f docker-compose-dev.yml exec web python src/manage.py test myapp --noinput --failfast --keepdb
+	docker-compose -f docker-compose-dev.yml exec web \
+		flake8 src/myapp --max-line-length=120 --exclude=migrations
+	docker-compose -f docker-compose-dev.yml exec web \
+		python src/manage.py test myapp --noinput --failfast --keepdb
 
 coverage: check-env
-	flake8 src/myapp --max-line-length=120
-	docker-compose -f docker-compose-dev.yml exec web src/manage.py test myapp --noinput
+	flake8 src/myapp --max-line-length=120 --exclude=migrations
+	python src/manage.py test myapp --noinput
 	coverage html
 	open htmlcov/index.html
+
+build-travis:		
+	docker-compose -f docker-compose-dev.yml build
+	docker-compose -f docker-compose-dev.yml up -d
+
+test-travis:
+	flake8 src/myapp --max-line-length=120 --exclude=migrations
+	python src/manage.py test myapp --settings=settings.test --noinput
+	coverage xml
 
 check-env:
 ifeq ($(wildcard .env),)

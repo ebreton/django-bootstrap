@@ -9,7 +9,7 @@ web:
     # following vars are required
     - DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE}
     - SECRET_KEY=${SECRET_KEY}
-    - ALLOWED_HOST=${ALLOWED_HOST}
+    - ALLOWED_HOSTS=${ALLOWED_HOST}
     - SITE_URL=${SITE_URL}
     - DATABASE_URL=${DATABASE_URL}
   command: gunicorn --reload -w 4 -b :80 --chdir /usr/src/app/src wsgi:application
